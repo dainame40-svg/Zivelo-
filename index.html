@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Zivelo - Complete Prototype</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#08080d;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+.app{
+  max-width:430px;
+  margin:auto;
+  min-height:100vh;
+  background:#101018;
+  position:relative;
+  padding-bottom:76px;
+}
+
+header{
+  height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  border-bottom:1px solid #242431;
+  position:sticky;
+  top:0;
+  background:#101018;
+  z-index:10;
+}
+
+.logo{
+  font-size:25px;
+  font-weight:800;
+}
+
+.logo span{
+  color:#8d5cff;
+}
+
+button{
+  border:0;
+  border-radius:12px;
+  padding:11px 15px;
+  background:#262638;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.primary{
+  background:#8d5cff;
+}
+
+.danger{
+  background:#d9485f;
+}
+
+.page{
+  display:none;
+  padding:16px;
+}
+
+.page.active{
+  display:block;
+}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  overflow:auto;
+  margin-bottom:14px;
+}
+
+.tabs button{
+  white-space:nowrap;
+}
+
+.tabs .on{
+  background:#8d5cff;
+}
+
+.card{
+  background:#191925;
+  border:1px solid #28283a;
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:13px;
+}
+
+.video{
+  height:390px;
+  border-radius:16px;
+  background:linear-gradient(150deg,#30204b,#11111a);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:62px;
+  margin-bottom:12px;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.actions button{
+  flex:1;
+  min-width:70px;
+}
+
+.creator{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#8d5cff,#ff4fa3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+}
+
+.stats{
+  display:flex;
+  justify-content:space-around;
+  text-align:center;
+  margin:15px 0;
+}
+
+.stats b{
+  display:block;
+  font-size:19px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.tile{
+  height:150px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#292943,#171722);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+}
+
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  max-width:430px;
+  width:100%;
+  height:70px;
+  background:#14141e;
+  border-top:1px solid #29293a;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:20;
+}
+
+.nav{
+  background:none;
+  padding:7px;
+  font-size:11px;
+  color:#aaa;
+}
+
+.nav b{
+  display:block;
+  font-size:22px;
+  margin-bottom:2px;
+}
+
+.nav.active{
+  color:#fff;
+}
+
+.livebox{
+  height:290px;
+  border-radius:16px;
+  background:radial-gradient(circle,#502c76,#12121b);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+
+.chat{
+  height:180px;
+  overflow:auto;
+  background:#0d0d14;
+  border-radius:12px;
+  padding:10px;
+  margin:10px 0;
+}
+
+.msg{
+  padding:6px 0;
+  color:#ddd;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  background:#2d2444;
+  color:#c7b4ff;
+  font-size:12px;
+}
+
+.row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.muted{
+  color:#9c9cab;
+  font-size:13px;
+}
+
+.search{
+  margin-bottom:12px;
+}
+
+.coins{
+  font-size:28px;
+  font-weight:800;
+  color:#ffd65a;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  background:#12121b;
+  color:#fff;
+  border:1px solid #303044;
+  border-radius:10px;
+  padding:12px;
+  margin:7px 0 12px;
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.filepreview{
+  width:100%;
+  max-height:230px;
+  border-radius:12px;
+  object-fit:cover;
+  display:none;
+  margin-bottom:10px;
+}
+
+.toast{
+  position:fixed;
+  bottom:85px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#fff;
+  color:#111;
+  padding:11px 16px;
+  border-radius:10px;
+  display:none;
+  z-index:50;
+  font-weight:700;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <div class="logo">ZI<span>V</span>ELO</div>
+  <button onclick="show('wallet')">Wallet</button>
+</header>
+
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+<div class="tabs">
+<button class="on">For You</button>
+<button>Following</button>
+<button onclick="show('live')">Live</button>
+</div>
+
+<div class="video">
+▶
+</div>
+
+<div class="creator">
+
+<div class="avatar">Z</div>
+
+<div>
+<b>Zivelo Creator</b>
+<div class="muted">@zivelocreator</div>
+</div>
+
+<button class="primary"
+onclick="toast('Following')">
+Follow
+</button>
+
+</div>
+
+<p>
+Welcome to Zivelo — discover creators,
+reels and live streams.
+</p>
+
+<div class="actions">
+
+<button onclick="toast('❤️ Liked')">
+❤️ Like
+</button>
+
+<button onclick="show('discover')">
+💬 Comment
+</button>
+
+<button onclick="gift()">
+🎁 Gift
+</button>
+
+<button onclick="toast('Link copied')">
+↗ Share
+</button>
+
+</div>
+
+</section>
+
+
+<!-- DISCOVER -->
+<section id="discover" class="page">
+
+<h2>Discover</h2>
+
+<input
+class="search"
+placeholder="Search creators, videos or lives..."
+oninput="filterCards(this.value)"
+>
+
+<div class="tabs">
+
+<button class="on">
+Trending
+</button>
+
+<button>
+Music
+</button>
+
+<button>
+Comedy
+</button>
+
+<button onclick="show('live')">
+Live
+</button>
+
+</div>
+
+
+<div id="discoverCards">
+
+<div class="card">
+
+<div class="creator">
+
+<div class="avatar">A</div>
+
+<div>
+<b>Amaka Live</b>
+<div class="muted">
+12.4K followers
+</div>
+</div>
+
+<button onclick="show('live')">
+Watch
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="creator">
+
+<div class="avatar">K</div>
+
+<div>
+<b>Kenny Comedy</b>
+<div class="muted">
+8.2K followers
+</div>
+</div>
+
+<button onclick="toast('Opening reel')">
+Reel
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="creator">
+
+<div class="avatar">M</div>
+
+<div>
+<b>Mega Music</b>
+<div class="muted">
+21K followers
+</div>
+</div>
+
+<button onclick="toast('Opening reel')">
+Reel
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CREATE -->
+<section id="create" class="page">
+
+<h2>Create</h2>
+
+<div class="card">
+
+<input
+id="media"
+type="file"
+accept="image/*,video/*"
+onchange="previewMedia(event)"
+>
+
+<img
+id="imgPreview"
+class="filepreview"
+>
+
+<video
+id="vidPreview"
+class="filepreview"
+controls>
+</video>
+
+<textarea
+id="caption"
+placeholder="Write a caption..."
+></textarea>
+
+<select id="postType">
+
+<option>
+Post
+</option>
+
+<option>
+Reel
+</option>
+
+<option>
+Story
+</option>
+
+</select>
+
+<button
+class="primary"
+style="width:100%"
+onclick="publish()"
+>
+Publish
+</button>
+
+</div>
+
+<div class="card">
+
+<b>Recent creations</b>
+
+<p class="muted">
+Your new posts will appear here in the prototype.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- LIVE -->
+<section id="live" class="page">
+
+<h2>Live</h2>
+
+<div class="livebox">
+
+<span style="font-size:55px">
+🔴
+</span>
+
+<h2>
+LIVE ROOM
+</h2>
+
+<span class="badge">
+1,248 viewers
+</span>
+
+</div>
+
+
+<div class="stats">
+
+<div>
+
+<b id="liveViewers">
+1,248
+</b>
+
+<span class="muted">
+Viewers
+</span>
+
+</div>
+
+
+<div>
+
+<b id="liveEarn">
+₦3.74
+</b>
+
+<span class="muted">
+Viewer earnings
+</span>
+
+</div>
+
+
+<div>
+
+<b id="giftCount">
+37
+</b>
+
+<span class="muted">
+Gifts
+</span>
+
+</div>
+
+</div>
+
+
+<div class="chat" id="chat">
+
+<div class="msg">
+<b>Amaka:</b> ❤️🔥
+</div>
+
+<div class="msg">
+<b>Kenny:</b> Great live!
+</div>
+
+<div class="msg">
+<b>David:</b> Hello everyone
+</div>
+
+</div>
+
+
+<div class="actions">
+
+<button onclick="sendChat()">
+💬 Chat
+</button>
+
+<button onclick="gift()">
+🎁 Send Gift
+</button>
+
+<button
+class="danger"
+onclick="toast('Live ended in prototype')"
+>
+End Live
+</button>
+
+</div>
+
+</section>
+
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+
+<div class="card">
+
+<div class="creator">
+
+<div class="avatar">
+M
+</div>
+
+<div>
+
+<h2 style="margin:0">
+My Zivelo
+</h2>
+
+<div class="muted">
+@myzivelo
+</div>
+
+</div>
+
+</div>
+
+
+<p>
+I create videos, go live and connect
+with people around the world.
+</p>
+
+
+<div class="stats">
+
+<div>
+<b>1.2K</b>
+Followers
+</div>
+
+<div>
+<b>340</b>
+Following
+</div>
+
+<div>
+<b>8.7K</b>
+Likes
+</div>
+
+</div>
+
+
+<div class="actions">
+
+<button onclick="show('edit')">
+Edit Profile
+</button>
+
+<button onclick="toast('Profile link copied')">
+Share Profile
+</button>
+
+</div>
+
+</div>
+
+
+<div class="tabs">
+
+<button class="on">
+Posts
+</button>
+
+<button>
+Reels
+</button>
+
+<button>
+Live
+</button>
+
+</div>
+
+
+<div class="grid">
+
+<div class="tile">
+🎬
+</div>
+
+<div class="tile">
+📸
+</div>
+
+<div class="tile">
+🎵
+</div>
+
+<div class="tile">
+😂
+</div>
+
+</div>
+
+</section>
+
+
+<!-- EDIT PROFILE -->
+<section id="edit" class="page">
+
+<h2>
+Edit Profile
+</h2>
+
+<div class="card">
+
+<label>
+Username
+</label>
+
+<input value="myzivelo">
+
+
+<label>
+Bio
+</label>
+
+<textarea>
+I create videos, go live and connect with people around the world.
+</textarea>
+
+
+<button
+class="primary"
+style="width:100%"
+onclick="toast('Profile saved');show('profile')"
+>
+Save Changes
+</button>
+
+</div>
+
+</section>
+
+
+<!-- WALLET -->
+<section id="wallet" class="page">
+
+<h2>
+Wallet
+</h2>
+
+
+<div class="card">
+
+<div class="muted">
+Available balance
+</div>
+
+<div class="coins">
+2,620 🪙
+</div>
+
+<p class="muted">
+Estimated cash value shown for prototype purposes.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="row">
+
+<b>
+Viewer earnings
+</b>
+
+<span>
+₦126.40
+</span>
+
+</div>
+
+<hr>
+
+
+<div class="row">
+
+<b>
+Gift earnings
+</b>
+
+<span>
+₦84.00
+</span>
+
+</div>
+
+<hr>
+
+
+<div class="row">
+
+<b>
+Total earnings
+</b>
+
+<span>
+₦210.40
+</span>
+
+</div>
+
+</div>
+
+
+<button
+class="primary"
+style="width:100%"
+onclick="show('withdraw')"
+>
+Withdraw
+</button>
+
+</section>
+
+
+<!-- WITHDRAW -->
+<section id="withdraw" class="page">
+
+<h2>
+Withdraw
+</h2>
+
+<div class="card">
+
+<div class="muted">
+Available
+</div>
+
+<h2>
+₦210.40
+</h2>
+
+
+<label>
+Amount
+</label>
+
+<input
+type="number"
+placeholder="Enter amount"
+>
+
+
+<label>
+Withdrawal method
+</label>
+
+<select>
+
+<option>
+Nigerian Bank Account
+</option>
+
+<option>
+Other supported method
+</option>
+
+</select>
+
+
+<label>
+Account details
+</label>
+
+<input
+placeholder="Account number / payout details"
+>
+
+
+<button
+class="primary"
+style="width:100%"
+onclick="toast('Withdrawal request created in prototype')"
+>
+Request Withdrawal
+</button>
+
+</div>
+
+
+<p class="muted">
+
+Real bank withdrawals require a secure backend,
+payment provider, identity verification and
+transaction processing.
+
+</p>
+
+</section>
+
+
+<!-- COINS -->
+<section id="coins" class="page">
+
+<h2>
+Coins
+</h2>
+
+<div class="card">
+
+<div class="muted">
+Your coins
+</div>
+
+<div class="coins">
+2,620 🪙
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<button onclick="buyCoins(500)">
+500 🪙
+<br>
+₦500
+</button>
+
+<button onclick="buyCoins(1200)">
+1,200 🪙
+<br>
+₦1,000
+</button>
+
+<button onclick="buyCoins(3000)">
+3,000 🪙
+<br>
+₦2,500
+</button>
+
+<button onclick="buyCoins(7000)">
+7,000 🪙
+<br>
+₦5,000
+</button>
+
+</div>
+
+</section>
+
+
+<!-- NOTIFICATIONS -->
+<section id="notifications" class="page">
+
+<h2>
+Notifications
+</h2>
+
+<div class="card">
+❤️ Someone liked your reel.
+</div>
+
+<div class="card">
+🎁 You received a gift.
+</div>
+
+<div class="card">
+🔴 A creator you follow is live.
+</div>
+
+</section>
+
+
+<!-- BOTTOM NAV -->
+<nav class="bottom">
+
+<button
+class="nav active"
+onclick="show('home',this)"
+>
+
+<b>⌂</b>
+Home
+
+</button>
+
+
+<button
+class="nav"
+onclick="show('discover',this)"
+>
+
+<b>⌕</b>
+Discover
+
+</button>
+
+
+<button
+class="nav"
+onclick="show('create',this)"
+>
+
+<b>＋</b>
+Create
+
+</button>
+
+
+<button
+class="nav"
+onclick="show('live',this)"
+>
+
+<b>●</b>
+Live
+
+</button>
+
+
+<button
+class="nav"
+onclick="show('profile',this)"
+>
+
+<b>◉</b>
+Profile
+
+</button>
+
+</nav>
+
+
+<div id="toast" class="toast"></div>
+
+</div>
+
+
+<script>
+
+function show(id,el){
+
+document
+.querySelectorAll('.page')
+.forEach(p =>
+p.classList.remove('active')
+);
+
+const page =
+document.getElementById(id);
+
+if(page){
+page.classList.add('active');
+}
+
+if(el){
+
+document
+.querySelectorAll('.nav')
+.forEach(n =>
+n.classList.remove('active')
+);
+
+el.classList.add('active');
+
+}
+
+window.scrollTo(0,0);
+
+}
+
+
+function toast(t){
+
+let x =
+document.getElementById('toast');
+
+x.textContent=t;
+
+x.style.display='block';
+
+clearTimeout(window.tt);
+
+window.tt=setTimeout(
+() =>
+x.style.display='none',
+1800
+);
+
+}
+
+
+function gift(){
+
+let x =
+document.getElementById('giftCount');
+
+x.textContent =
++x.textContent+1;
+
+toast(
+'🎁 Gift sent! Creator earned extra'
+);
+
+}
+
+
+function sendChat(){
+
+let m =
+prompt(
+'Write a chat message'
+);
+
+if(m){
+
+let c =
+document.getElementById('chat');
+
+c.innerHTML +=
+`<div class="msg">
+<b>You:</b> ${m}
+</div>`;
+
+c.scrollTop =
+c.scrollHeight;
+
+}
+
+}
+
+
+function publish(){
+
+let c =
+document
+.getElementById('caption')
+.value
+.trim();
+
+toast(
+c
+?
+'Published successfully'
+:
+'Add a caption or media first'
+);
+
+}
+
+
+function previewMedia(e){
+
+let f =
+e.target.files[0];
+
+if(!f)return;
+
+let img =
+document.getElementById('imgPreview');
+
+let vid =
+document.getElementById('vidPreview');
+
+img.style.display='none';
+
+vid.style.display='none';
+
+let u =
+URL.createObjectURL(f);
+
+if(
+f.type.startsWith('image/')
+){
+
+img.src=u;
+
+img.style.display='block';
+
+}else{
+
+vid.src=u;
+
+vid.style.display='block';
+
+}
+
+}
+
+
+function buyCoins(n){
+
+toast(
+n+' coins selected for purchase'
+);
+
+}
+
+
+function filterCards(v){
+
+document
+.querySelectorAll(
+'#discoverCards .card'
+)
+.forEach(c => {
+
+c.style.display =
+c.innerText
+.toLowerCase()
+.includes(
+v.toLowerCase()
+)
+?
+'block'
+:
+'none';
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
