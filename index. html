@@ -1277,11 +1277,24 @@ v.toLowerCase()
 
 <script>
 supabase.auth.getSession().then(({ data, error }) => {
-  if (error) {
-    console.error("Supabase connection error:", error);
-  } else {
-    console.log("Supabase connected successfully!");
-  }
+  const test = document.createElement("div");
+
+  test.style.position = "fixed";
+  test.style.top = "10px";
+  test.style.left = "10px";
+  test.style.right = "10px";
+  test.style.padding = "15px";
+  test.style.background = error ? "#ff0000" : "#00aa00";
+  test.style.color = "#ffffff";
+  test.style.zIndex = "99999";
+  test.style.textAlign = "center";
+  test.style.fontWeight = "bold";
+
+  test.textContent = error
+    ? "❌ Supabase connection failed"
+    : "✅ Supabase connected successfully";
+
+  document.body.appendChild(test);
 });
 </script>
 </body>
